@@ -1,0 +1,183 @@
+#!/bin/bash
+tx=$HOME/thepakv4
+
+cd $tx
+ source etc/folder.sh
+ source etc/banner.sh
+ 
+echo -e "${GREEN}-----------------------------------"
+echo -e "${YELLOW}【E】【X】【E】【C】【U】【T】【E】: ${RED}⚠${NOCOLOR}SETUP${RED}⚠${NOCOLOR}3•4${NOCOLOR}"
+echo -e "${GREEN}-----------------------------------${NOCOLOR}"
+ 
+ if [[ -d "SU" ]]
+  then
+    echo ""
+ else
+    mkdir SU
+ fi
+
+function redirect {
+  echo -ne "0%"
+  sleep 0.2
+  echo -ne "\r23%"
+  sleep 0.8
+  echo -ne "\r49%"
+  sleep 0.5
+  echo -ne "\r60%"
+  sleep 0.5
+  echo -ne "\r86%"
+  sleep 0.6
+  echo -ne "\r90%"
+  sleep 0.2
+  echo -ne "\r100%"
+  sleep 0.6
+clear
+cd $QBMSDIR/translate
+bash thepak
+}
+
+function quickbms_setup {
+function nextinstaller {
+echo "Please wait .."
+echo "unpacking data"
+cd $tx
+unzip -qq quickbms_linux.zip
+sleep 1
+rm -rf $PREFIX/share/quickbms
+sleep 1
+echo "improving"
+mkdir $PREFIX/share/quickbms
+sleep 1
+chmod +x quickbms_4gb_files
+yes | cp -rf quickbms_4gb_files $QBMSDIR
+chmod +x quickbms
+yes | cp -rf quickbms $QBMSDIR
+chmod +x etc/tools.bms thepakv3
+sleep 1
+rm -rf quickbms*
+echo done
+sleep 1
+quickbms_check
+}
+
+function testbmsm {
+echo "checking file .Zip"
+FILE=$down/quickbms_linux.zip
+  if [ -f "$FILE" ]; then
+      echo " file founded"
+      mv $down/quickbms_linux.zip $tx
+      nextinstaller
+  else 
+      clear
+      echo -e "${RED}THE FILE IS NOT FOUND${NOCOLOR}"
+      quickbms_manual
+  fi
+}
+
+function testbmsauto {
+echo "checking downloaded program"
+sleep 1
+FILE=quickbms_linux.zip
+  if [ -f "$FILE" ]; then
+      echo " file founded"
+      nextinstaller
+  else 
+      clear
+      echo -e "${RED}THE FILE IS NOT FOUND${NOCOLOR}"
+      quickbms_install
+  fi
+}
+
+function quickbms_manual {
+  clear
+  echo ""
+  echo "http://aluigi.altervista.org/papers/quickbms_linux.zip"
+  echo -e "${RED} first download file from link above ${NOCOLOR}"
+  echo -e "${GREEN}after download that paste the file in download folder ${NOCOLOR}"
+cd $down
+prompt="Please select a file quick bms :"
+options=( $(find *.zip) )
+
+PS3="$prompt "
+select bms in "${options[@]}" "Quit" ; do 
+    if (( REPLY == 1 + ${#options[@]} )) ; then
+        quickbms_install
+
+    elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+        echo  "You picked $bms which is file quickbms file"
+         testbmsm
+    else
+        echo "Invalid option. Try another one."
+    fi
+done
+cd $tx
+}
+
+function quickbms_auto {
+echo "AUTO INSTALLATION METHOD USED"
+echo "Please WAIT"
+echo "this process depends on your signal"
+echo " if it take to long please press CTRL + C"
+sleep 2
+echo "starting"
+cd $tx
+wget http://aluigi.altervista.org/papers/quickbms_linux.zip
+echo " checking..."
+testbmsauto
+}
+
+echo -e "CHOOSE PROGRAM INSTALLER METHOD"
+echo "MAKE SURE YOU HAVE GREAT CONNECTION WHEN CHOOSE AUTO"
+echo "because the process Will be taking longer"
+PS3='Please enter your CHOOSE: '
+options=("Auto" "Manual")
+select pategk in "${options[@]}"
+do
+    case $pategk in
+        "Auto")
+            quickbms_auto
+            ;;
+        "Manual")
+            quickbms_manual
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done 
+}
+
+function quickbms_check {
+ echo "${yellow} checking requirement PROGAM ${NOCOLOR}"
+ 
+  cd $QBMSDIR
+   if [[ -f "quickbms" ]]
+     then
+       echo "PROGAM HAS BEEN INSTALLED"
+       echo "REDIRECTING..."
+        redirect
+   else
+       echo "${RED} PROGRAM ${NOCOLOR} NOT INSTALLED"
+       quickbms_setup
+   fi
+}
+
+
+echo -e "${YELLOW}Checking Required packages${NOCOLOR}"
+
+packages=("wget" "unzip" "curl" "x11-repo" "qemu-system-i386" "qemu-user-i386")
+
+for pkg in ${packages[@]}; do
+
+    is_pkg_installed=$(dpkg-query -W --showformat='${Status}\n' ${pkg} | grep "install ok installed")
+
+    if [ "${is_pkg_installed}" == "install ok installed" ]; then
+        echo -e ${GREEN}${pkg}${NOCOLOR} is installed.
+    else [ "" = "${is_pkg_installed}" ];
+     echo -e "${RED}No ${pkg}. Setting up ${pkg}.${NOCOLOR}" 
+    pkg install ${pkg} -y
+    fi
+done
+quickbms_check
+
+
+
+

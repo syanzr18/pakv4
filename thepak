@@ -1,0 +1,500 @@
+#!/bin/bash
+
+tx=$HOME/thepakv4
+cd $tx
+ source etc/banner.sh
+ source etc/folder.sh
+clear
+ echo -e "${RED}▀█▀ █░█ █▀▀ █▀█ ▄▀█ █▄▀${NOCOLOR}"
+echo -e "░█░ █▀█ ██▄ █▀▀ █▀█ █░█"
+echo -e "${RED}Script ${GREEN}by Mhmmdysf${WHITE}"
+echo -e "${RED}MODDED ${GREEN}by ${GREEN}@_syanzr${WHITE}"
+echo -e "${GREEN}-----------------------------------"
+echo -e "${YELLOW}【E】【X】【E】【C】【U】【T】【E】: ${GREEN}🇹 🇭 🇪 🇵 🇦 🇰 🇻 4•6${NOCOLOR}"
+echo -e "${GREEN}-----------------------------------${NOCOLOR}"
+
+
+
+
+
+
+FILE1=$QBMSDIR/translate/setup
+if [[ -f "$FILE1" ]]
+ then
+   rm $FILE1
+else
+  echo -ne "\n"
+fi
+FILE2=$tx/install.sh
+if [[ -f "$FILE2" ]]
+ then
+  mv $tx/install.sh $tx/etc
+else
+  echo
+fi
+
+
+
+
+
+
+
+function cache {
+  cd $tx
+  
+  if [[ -f "cache" ]]
+  then
+    echo ""
+  else
+    cd etc
+     mv cache.h ../cache
+  fi
+}
+
+function QBMSUN64 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms_4gb_files etc/tools.bms $dpak/$pak $opak/$pak
+  sleep 1
+  cache
+}
+
+function QBMSUN32 {
+  cd $tx
+ qemu-i386 $QBMSDIR/quickbms etc/tools.bms $dpak/$pak $opak/$pak
+ sleep 1
+ cache
+}
+
+function QBMSRE32_1 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms -w -r etc/tools.bms $dpak/$pak $opak/$pak
+}
+
+function QBMSRE32_2 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms -w -r -r etc/tools.bms $dpak/$pak $opak/$pak
+}
+
+function QBMSRE32_3 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms -w -r -r -r etc/tools.bms $dpak/$pak $opak/$pak
+}
+
+function QBMSRE64_1 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms_4gb_files -w -r etc/tools.bms $dpak/$pak $opak/$pak
+}
+
+function QBMSRE64_2 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms_4gb_files -w -r -r etc/tools.bms $dpak/$pak $opak/$pak
+}
+
+function QBMSRE64_3 {
+  cd $tx
+  qemu-i386 $QBMSDIR/quickbms_4gb_files -w -r -r -r etc/tools.bms $dpak/$pak $opak/$pak
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function PAKDAT32 {
+  cd $tx/SU
+  if [[ -f "$pak" ]]
+   then
+     rm -rf $pak
+     echo "$dadi" >$pak
+  else
+     echo "$dadi" >$pak
+  fi
+  cd $down
+  if [[ -d "output" ]]
+   then
+     echo ""
+  else
+     mkdir output
+  fi
+  cd $opak
+  if [[ -d "$pak" ]]
+   then
+     rm -rf $pak
+     mkdir $pak
+  else
+     mkdir $pak
+  fi
+  QBMSUN32
+}
+
+function PAKDAT64 {
+  cd $tx/SU
+  if [[ -f "$pak" ]]
+   then
+     rm -rf $pak
+     echo "$dadi" >$pak
+  else
+     echo "$dadi" >$pak
+  fi
+  cd $opak
+  if [[ -d "$pak" ]]
+   then
+     rm -rf $pak
+     mkdir $pak
+  else
+     mkdir $pak
+  fi
+  QBMSUN64
+}
+
+
+
+
+
+
+
+function UN32 {
+cd $dpak
+prompt="Please select a file to UNPACK:"
+options=( $(find *.*) )
+
+PS3="$prompt "
+select pak in "${options[@]}" "Quit" ; do 
+    if (( REPLY == 1 + ${#options[@]} )) ; then
+        break
+    elif (( REPLY > 0 && pak == "Quit" )) ;
+      then
+        break
+    elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+        echo  "You picked $pak which is file $REPLY"
+        PAKDAT32
+    else
+        echo "Invalid option. Try another one."
+    fi
+done
+}
+
+function UN64 {
+cd $dpak
+prompt="Please select a file to UNPACK:"
+options=( $(find *.*) )
+
+PS3="$prompt "
+select pak in "${options[@]}" "Quit" ; do 
+    if (( REPLY == 1 + ${#options[@]} )) ; then
+        break
+    elif (( REPLY > 0 && pak == "Quit" )) ;
+      then
+        break
+    elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+        echo  "You picked $pak which is file $REPLY"
+        PAKDAT64
+    else
+        echo "Invalid option. Try another one."
+    fi
+done
+}
+
+function BMU {
+echo "-------------------------------"
+echo "PLEASE CHOOSE TYPE ANDROID BIT"
+echo "FOR BETTER COMPUTING"
+echo "ANDROID 5-9 CHOOSE 32 BIT"
+echo "ANDROID 10+ CHOOSE 64 BIT"
+echo "-------------------------------"
+echo ""
+  #HEAD PROGRAM
+PS3='Please enter your choice: '
+options=("32 BIT" "64 BIT" "Quit")
+select dadi in "${options[@]}"
+do
+    case $dadi in
+        "32 BIT")
+            UN32
+            break
+            ;;
+        "64 BIT")
+            UN64
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function MSGBMS {
+  
+  PESANMSG="
+  PROGAM TYPE    : BASH SCRIPT
+  SETUP VERSION  : V3.4
+  THEPAK VERSION : V4.6
+  INSTALLER      : ON SCRIPT
+  TYPE           : ADDONS
+  
+  HOW TO USE WATCH MY CHANNEL
+
+  -------------------------------
+  THANKS FOR CONTRIBUTE
+  AND CREATE THIS script
+  BETTER THAN BEFORE
+  CREATED BY : BUDI THEUNKNOWNNAME06
+  GROUP : THEUNKNOWNNAME
+  
+  MY SOCIALMEDIA :
+     FB : http://bit.ly/FB-TUN06
+     IG : http://bit.ly/IG-TUN06
+     YT : http://bit.ly/YT_TUN-Budi06
+  CONTACT ME :
+    tun.drive06@gmail.com
+    
+  DONATE :
+     http://bit.ly/TUN_DONATE
+     
+     
+  GREETINGS,THEUNKNOWNNAME.
+  -------------------------------
+  
+  "
+  
+  whiptail --title "HOW TO USE THEPAK" --msgbox "$PESANMSG" 80 80
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function PAKDAT32re {
+  echo -e "the option 1 is compress type ${RED}'ITS CANNOT TO COMPRESS THE FILE (OUTPUT) BIGGER SIZE THAN ORIGINAL(INPUT)${NOCOLOR}'but this great option"
+  echo -e "the option 2 is compress type ${BLUE}'USE THIS FOR COMPRESS THE FILE (OUTPUT) BIGGER SIZE THAN ORIGINAL(INPUT)${NOCOLOR}' ${RED}WARNING:${NOCOLOR}This will break algorithme from script/pak file"
+  echo -e "the option 2 is compress type ${BLUE}'USE THIS FOR COMPRESS THE FILE (OUTPUT) BIGGER SIZE THAN ORIGINAL(INPUT)${NOCOLOR}'${RED}WARNING:${NOCOLOR} This option for when the option 2 is not work.but this file has more percent chance to work but the file maybe corrupted if the script not support"
+PS3='Please enter your choice: '
+options=("opt 1" "opt 2" "opt 3" "Quit")
+select type in "${options[@]}"
+do
+    case $type in
+        "opt 1")
+            QBMSRE32_1
+            break
+            
+            ;;
+        "opt 2")
+            QBMSRE32_2
+            break
+            
+            ;;
+        "opt 3")
+            QBMSRE32_3
+            break
+            
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done 
+}
+
+function PAKDAT64re {
+echo -e "the option 1 is compress type ${RED}'ITS CANNOT TO COMPRESS THE FILE (OUTPUT) BIGGER SIZE THAN ORIGINAL(INPUT)${NOCOLOR}'but this great option"
+  echo -e "the option 2 is compress type ${BLUE}'USE THIS FOR COMPRESS THE FILE (OUTPUT) BIGGER SIZE THAN ORIGINAL(INPUT)${NOCOLOR}' ${RED}WARNING:${NOCOLOR}This will break algorithme from script/pak file"
+  echo -e "the option 2 is compress type ${BLUE}'USE THIS FOR COMPRESS THE FILE (OUTPUT) BIGGER SIZE THAN ORIGINAL(INPUT)${NOCOLOR}'${RED}WARNING:${NOCOLOR} This option for when the option 2 is not work.but this file has more percent chance to work but the file maybe corrupted if the script not support"
+PS3='Please enter your choice: '
+options=("opt 1" "opt 2" "opt 3" "Quit")
+select type in "${options[@]}"
+do
+    case $type in
+        "opt 1")
+            QBMSRE64_1
+            break
+            
+            ;;
+        "opt 2")
+            QBMSRE64_2
+            break
+            
+            ;;
+        "opt 3")
+            QBMSRE64_3
+            break
+            
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done 
+}
+
+
+
+
+function RE32 {
+cd $tx/SU
+prompt="Please select a file to repack:"
+options=( $(find *.*) )
+
+PS3="$prompt "
+select pak in "${options[@]}" "Quit" ; do 
+    if (( REPLY == 1 + ${#options[@]} )) ; then
+        break
+    elif (( REPLY > 0 && pak == "Quit" )) ;
+      then
+        break
+    elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+        echo  "You picked $pak which is file $REPLY"
+        PAKDAT32re
+    else
+        echo "Invalid option. Try another one."
+    fi
+done
+}
+
+function RE64 {
+cd $tx/SU
+prompt="Please select a file to repack:"
+options=( $(find *.*) )
+
+PS3="$prompt "
+select pak in "${options[@]}" "Quit" ; do 
+    if (( REPLY == 1 + ${#options[@]} )) ; then
+        break
+    elif (( REPLY > 0 && pak == "Quit" )) ;
+      then
+        break
+    elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+        echo  "You picked $pak which is file $REPLY"
+        PAKDAT64re
+    else
+        echo "Invalid option. Try another one."
+    fi
+done
+}
+
+function BMRE {
+  #HEAD PROGRAM
+echo "-------------------------------"
+echo "PLEASE CHOOSE TYPE ANDROID BIT"
+echo "FOR BETTER COMPUTING"
+echo "ANDROID 5-9 CHOOSE 32 BIT"
+echo "ANDROID 10+ CHOOSE 64 BIT"
+echo "-------------------------------"
+echo ""
+PS3='PLEASE ENTER ANDROID TYPE: '
+options=("32 BIT" "64 BIT" "Quit")
+select dadi in "${options[@]}"
+do
+    case $dadi in
+        "32 BIT")
+            RE32
+            break
+            ;;
+        "64 BIT")
+            RE64
+            break
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done 
+}
+
+
+
+#HEAD PROGRAM
+
+PS3='Please enter your choice: '
+options=("Unpack" "Repack" "INFO" "Quit")
+select dadi in "${options[@]}"
+do
+    case $dadi in
+        "Unpack")
+            BMU
+            ;;
+        "Repack")
+            BMRE
+            
+            ;;
+        "INFO")
+            MSGBMS
+            ;;
+        "Quit")
+            cd $tx
+            if [[ -f "cache" ]]
+              then
+                bash cache
+                exit
+            else
+                exit
+            fi
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done 
